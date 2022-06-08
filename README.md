@@ -1,23 +1,52 @@
-# Playwright, e2e testování stream.cz
-Seznam úkolu:
-- Fork repozitáře k sobě, ve kterém budeš provádět jednotilvé změny.
-- Seznámení se s knihovnou [Playwright](https://playwright.dev) pro end to end testování
-- Nainicializování základní konfigurace a závislostí pro spouštění prvních testů pomocí [dokumentace](https://playwright.dev/docs/intro)
-- Vytvoření souboru či více, které budou obsahovat testy, pokrývající minimálně následující testové scénáře
+# Playwright a E2E testování stream.cz
 
-Testové scénáře:
-- Příchod na Hlavní stránku a vyhledání výrazu `Kazma`, kontrola přesměrování a existence neprázdných výsledků (Nejlepší výsledek, Pořady, Videa)
-- Vyhledání neexistujícího výrazu, např. `abcdsuperbullshit42` a kontrola vypsání upozorńující hlášky, že jsme nic nenašli
-- Příchod na prázdnou stránku vyhledávání (`/hledani`) a kontrola, že již neobshauje nějaké výsledky, tedy čeká na zadání výrazu
-- Zahledání z libovolné stránky výrazu `Kazma`, kontrola existence videí, klik na `Načíst další videa` a kontrola zdali načtení proběhlo správně a položky přibyli
-- Libovolný test funkcionality filtrování výpisu videí. Nad seznamem videí máme Tlačítko `Filtry`, které vyroluje možnosti filtrace (jde nám o akci a změnu, nikoliv programatickou kontrolu jestli jsou položky správně seřazené)
+V popisu níže najdeš zadaní testovací úlohy pro otestovaní webu [Stream.cz](https://www.stream.cz). Úloha musí být
+vypracována v čistém PlayWrightu bez dalších modulů a pluginů. Na úlohu je časová dotace 2 hodiny.
+
+### Seznam úkolu:
+
+1. Fork repozitáře k sobě, ve kterém budeš provádět jednotlivé změny.
+   - své změny řádně commituj a nejlépe používej
+     [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
+1. Seznámit se s knihovnou [Playwright](https://playwright.dev) pro end-to-end testování.
+1. Inicializace základní konfigurace a závislostí pro spuštění prvních testů pomocí
+   [dokumentace](https://playwright.dev/docs/intro).
+1. Vytvoření adresářové struktury a souborů, které budou obsahovat testy pokrývající minimálně následující testové
+   scénáře.
+
+### Testové scénáře:
+
+- Příchod na Hlavní stránku a vyhledání výrazu `Kazma`, kontrola přesměrování a existence neprázdných výsledků
+  (Nejlepší výsledek, Pořady, Videa)
+- Vyhledání neexistujícího výrazu, např. `abcdsupernothing42` a kontrola vypsání upozorňující hlášky, že jsme nic
+  nenašli
+- Příchod na prázdnou stránku vyhledávání (`/hledani`) a kontrola, že již neobshauje nějaké výsledky, tedy čeká na
+  zadání výrazu
+- Zahledání z libovolné stránky výrazu `Kazma`, kontrola existence videí, klik na `Načíst další videa` a kontrola zda-li
+  načtení proběhlo správně a položky přibyly
+- Libovolný test funkcionality filtrování výpisu videí.
+    - Nad seznamem videí máme Tlačítko `Filtry`, které vyroluje možnosti filtrace (jde nám o akci a změnu, nikoliv
+      programatickou kontrolu jestli jsou položky správně seřazené)
 - Další testy, které by podle tebe měly být součástí testování funkcionality stránky vyhledávání
 
 
-Možné problémy a tipy:
-- **Debugování:** Pro debugování doporučujeme využívat [Trace Viewer](https://playwright.dev/docs/trace-viewer). Testy se ve výchozím stavu spouští v tzv. `headless` režimu, zjednodušeně řečeno pouze v terminálu. Testy lze zapnout i [mimo](https://playwright.dev/docs/debug#run-in-headed-mode) `headless` režim a rovnou vidět potřebné kroky (`{ headless: false, slowMo: 100 }`). Použivej pro celou adresu variantu s `www`, pokud nechceš kontrolovat přesměrování.
-- **Stabilita testů:** Napsání stabilních testů není úplně triviální, záleží na prostředí, ve kterém se testy spouští, prohlížeč, stroj, typ stránky atd. Často pomůže [zvýšení timeoutů](https://playwright.dev/docs/test-timeouts#test-timeout) či spouštět neúspešný test s více [opakováním](https://playwright.dev/docs/test-retries#retries) a vyhnout se tak zbytečnému debuggování.
-- **CMP dialog:** e2e testy se v základu tváří jako nepřihlášený uživatel. Na streamu aktuálně máme modal, který se zobrazuje po pár sekundách uživateli a chce zakliknout jeho uživatelské preference kvůli různému sledování. Tento modal může blokovat další akce e2e testů a nelze deterministicky určit, kdy se zobrazí. Řešením může být zamezení jeho zobrazení, pokud správně nastavíme cookies ještě před příchodem na dannou stránku. Pro nastavení cookies využij [BrowserContext](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-cookies).
+### Možné problémy a tipy:
+
+- **Debugování:** Pro debugování doporučujeme využívat [Trace Viewer](https://playwright.dev/docs/trace-viewer). Testy
+  se ve výchozím stavu spouští v tzv. `headless` režimu, zjednodušeně řečeno pouze v terminálu. Testy lze zapnout i
+  [mimo](https://playwright.dev/docs/debug#run-in-headed-mode) `headless` režim a rovnou vidět potřebné kroky
+  (`{ headless: false, slowMo: 100 }`). Pro testování použij adresu s `https://www.stream.cz/...`, pokud nechceš
+  kontrolovat přesměrování.
+- **Stabilita testů:** Napsání stabilních testů není úplně triviální, záleží na prostředí, ve kterém se testy spouští,
+  prohlížeč, stroj, typ stránky atd. Často pomůže
+  [zvýšení timeoutů](https://playwright.dev/docs/test-timeouts#test-timeout) či spouštět neúspešný test s více
+  [opakováním](https://playwright.dev/docs/test-retries#retries) a vyhnout se tak zbytečnému debugování.
+- **CMP dialog:** e2e testy se v základu tváří jako nepřihlášený uživatel. Na Streamu aktuálně máme modal, který se
+  zobrazuje po pár sekundách uživateli a chce zakliknout jeho uživatelské preference kvůli různému sledování a GDPR.
+  Tento modal může blokovat další akce e2e testů a nelze deterministicky určit, kdy se zobrazí. Řešením může být
+  zamezení jeho zobrazení nastavením cookies ještě před příchodem na danou stránku. Pro nastavení cookies využij
+  [BrowserContext](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-cookies).
+
 ```jsx
 const CMP_COOKIES: Cookie[] = [
 	{
